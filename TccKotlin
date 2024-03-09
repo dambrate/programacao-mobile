@@ -32,7 +32,7 @@ class Usuario(
             tmbFinal += 500 // Adição de 500 calorias por dia para ganho de peso
         }
 
-        // Distribuindo as calorias em macronutrientes (40% carboidratos, 30% proteínas, 30% gorduras)
+        calorias em macronutrientes (40% carboidratos, 30% proteínas, 30% gorduras)
         val carboidratosPercent = 0.40
         val proteinasPercent = 0.30
         val gordurasPercent = 0.30
@@ -41,7 +41,7 @@ class Usuario(
         val caloriasProteinas = tmbFinal * proteinasPercent
         val caloriasGorduras = tmbFinal * gordurasPercent
 
-        // Convertendo calorias em gramas
+        // calorias em gramas
         val gramasCarboidratos = caloriasCarboidratos / 4 // 1g de carboidratos = 4 calorias
         val gramasProteinas = caloriasProteinas / 4 // 1g de proteínas = 4 calorias
         val gramasGorduras = caloriasGorduras / 9 // 1g de gorduras = 9 calorias
