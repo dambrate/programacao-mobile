@@ -1,0 +1,66 @@
+class Usuario(
+    val nome: String,
+    val altura: Double,
+    val peso: Double,
+    val idade: Int,
+    val sexo: String,
+    val nivelAtividade: String,
+    val objetivo: String
+) {
+    var metas: Map<String, Double> = mapOf()
+
+    fun calcularMetas(): Map<String, Double> {
+        // Calculando a Taxa Metabólica Basal (TMB)
+        val tmb: Double = if (sexo.toLowerCase() == "masculino") {
+            10 * peso + 6.25 * altura - 5 * idade + 5
+        } else {
+            10 * peso + 6.25 * altura - 5 * idade - 161
+        }
+
+        val fatorAtividade = mapOf(
+            "sedentario" to 1.2,
+            "leve" to 1.375,
+            "moderado" to 1.55,
+            "ativo" to 1.725,
+            "muito ativo" to 1.9
+        )
+        var tmbFinal = tmb * fatorAtividade[nivelAtividade.toLowerCase()]!!
+
+        if (objetivo.toLowerCase() == "perda de peso") {
+            tmbFinal -= 500 // Redução de 500 calorias por dia para perda de peso
+        } else if (objetivo.toLowerCase() == "ganho de peso") {
+            tmbFinal += 500 // Adição de 500 calorias por dia para ganho de peso
+        }
+
+        // Distribuindo as calorias em macronutrientes (40% carboidratos, 30% proteínas, 30% gorduras)
+        val carboidratosPercent = 0.40
+        val proteinasPercent = 0.30
+        val gordurasPercent = 0.30
+
+        val caloriasCarboidratos = tmbFinal * carboidratosPercent
+        val caloriasProteinas = tmbFinal * proteinasPercent
+        val caloriasGorduras = tmbFinal * gordurasPercent
+
+        // Convertendo calorias em gramas
+        val gramasCarboidratos = caloriasCarboidratos / 4 // 1g de carboidratos = 4 calorias
+        val gramasProteinas = caloriasProteinas / 4 // 1g de proteínas = 4 calorias
+        val gramasGorduras = caloriasGorduras / 9 // 1g de gorduras = 9 calorias
+
+        // Armazenando as metas
+        metas = mapOf(
+            "calorias" to tmbFinal,
+            "carboidratos" to gramasCarboidratos,
+            "proteinas" to gramasProteinas,
+            "gorduras" to gramasGorduras
+        )
+
+        return metas
+    }
+}
+
+fun main() {
+    // Criar um novo usuário
+    val usuario1 = Usuario("João", 1.75, 70.0, 30, "Masculino", "Ativo", "Perda de peso")
+    val metasUsuario1 = usuario1.calcularMetas()
+    println("Metas do usuário: $metasUsuario1")
+}
