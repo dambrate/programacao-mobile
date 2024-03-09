@@ -1,0 +1,38 @@
+fun main() {
+    var idioma = "português"
+    val nota = 0.5f
+    var x = 10.5
+
+    val resultado = nota + x.toDouble()
+
+    println("Idioma: $idioma") 
+    println("Resultado: $resultado") 
+    println(x) 
+}
+
+
+
+
+
+ex1
+    println("digite o primeiro numero inteiro:")
+    val numero1 = readLine()!!.toInt()
+    println("digite o segundo numero inteiro:")
+    val numero2 = readLine()!!.toInt()
+    if (numero1 > numero2) {
+        println("O número $numero1 é maior.")
+    } else {
+        println("O número $numero2 é maior.")
+    }
+}
+
+ex2
+
+
+
+    println("Digite a temperatura em C:")
+    val C: Double = readLine()!!.toDoubl  e()
+   val F: Double = c * 1.8 + 32
+
+    println("A temperatura em F é: $f")
+}
