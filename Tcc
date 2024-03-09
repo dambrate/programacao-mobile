@@ -1,0 +1,61 @@
+class Usuario:
+    def __init__(self, nome, altura, peso, idade, sexo, nivel_atividade, objetivo):
+        self.nome = nome
+        self.altura = altura
+        self.peso = peso
+        self.idade = idade
+        self.sexo = sexo
+        self.nivel_atividade = nivel_atividade
+        self.objetivo = objetivo
+        self.metas = {}
+
+    def calcular_metas(self):
+        # Calculando a Taxa Metabólica Basal (TMB)
+        if self.sexo.lower() == 'masculino':
+            tmb = 10 * self.peso + 6.25 * self.altura - 5 * self.idade + 5
+        else:
+            tmb = 10 * self.peso + 6.25 * self.altura - 5 * self.idade - 161
+        
+        fator_atividade = {
+            'sedentario': 1.2,
+            'leve': 1.375,
+            'moderado': 1.55,
+            'ativo': 1.725,
+            'muito ativo': 1.9
+        }
+        tmb *= fator_atividade[self.nivel_atividade.lower()]
+
+        if self.objetivo.lower() == 'perda de peso':
+            tmb -= 500  # Redução de 500 calorias por dia para perda de peso
+        elif self.objetivo.lower() == 'ganho de peso':
+            tmb += 500  # Adição de 500 calorias por dia para ganho de peso
+
+        # Distribuindo as calorias em macronutrientes (40% carboidratos, 30% proteínas, 30% gorduras)
+        carboidratos_percent = 0.40
+        proteinas_percent = 0.30
+        gorduras_percent = 0.30
+
+        calorias_carboidratos = tmb * carboidratos_percent
+        calorias_proteinas = tmb * proteinas_percent
+        calorias_gorduras = tmb * gorduras_percent
+
+        # Convertendo calorias em gramas
+        gramas_carboidratos = calorias_carboidratos / 4  # 1g de carboidratos = 4 calorias
+        gramas_proteinas = calorias_proteinas / 4         # 1g de proteínas = 4 calorias
+        gramas_gorduras = calorias_gorduras / 9           # 1g de gorduras = 9 calorias
+
+        # Armazenando as metas
+        self.metas = {
+            'calorias': tmb,
+            'carboidratos': gramas_carboidratos,
+            'proteinas': gramas_proteinas,
+            'gorduras': gramas_gorduras
+        }
+
+        return self.metas
+
+if __name__ == "__main__":
+    # Criar um novo usuário
+    usuario1 = Usuario("João", 1.75, 70, 30, "Masculino", "Ativo", "Perda de peso")
+    metas_usuario1 = usuario1.calcular_metas()
+    print("Metas do usuário:", metas_usuario1)
