@@ -1,20 +1,20 @@
 class Usuario(
     val nome: String,
-    val altura: Double,
-    val peso: Double,
+    val altura: Int,
+    val peso: Int,
     val idade: Int,
     val sexo: String,
     val nivelAtividade: String,
     val objetivo: String
 ) {
-    var metas: Map<String, Double> = mapOf()
+    var metas: Map<String, Int> = mapOf()
 
-    fun calcularMetas(): Map<String, Double> {
+    fun calcularMetas(): Map<String, Int> {
         // Calculando a Taxa Metabólica Basal (TMB)
-        val tmb: Double = if (sexo.toLowerCase() == "masculino") {
-            10 * peso + 6.25 * altura - 5 * idade + 5
+        val tmb: Int = if (sexo.toLowerCase() == "masculino") {
+            (10 * peso + 6.25 * altura - 5 * idade + 5).toInt()
         } else {
-            10 * peso + 6.25 * altura - 5 * idade - 161
+            (10 * peso + 6.25 * altura - 5 * idade - 161).toInt()
         }
 
         val fatorAtividade = mapOf(
@@ -24,7 +24,7 @@ class Usuario(
             "ativo" to 1.725,
             "muito ativo" to 1.9
         )
-        var tmbFinal = tmb * fatorAtividade[nivelAtividade.toLowerCase()]!!
+        var tmbFinal = (tmb * fatorAtividade[nivelAtividade.toLowerCase()]!!).toInt()
 
         if (objetivo.toLowerCase() == "perda de peso") {
             tmbFinal -= 500 // Redução de 500 calorias por dia para perda de peso
@@ -32,35 +32,91 @@ class Usuario(
             tmbFinal += 500 // Adição de 500 calorias por dia para ganho de peso
         }
 
-        calorias em macronutrientes (40% carboidratos, 30% proteínas, 30% gorduras)
-        val carboidratosPercent = 0.40
-        val proteinasPercent = 0.30
-        val gordurasPercent = 0.30
+        val caloriasCarboidratos = (tmbFinal * 0.40).toInt()
+        val caloriasProteinas = (tmbFinal * 0.30).toInt()
+        val caloriasGorduras = (tmbFinal * 0.30).toInt()
 
-        val caloriasCarboidratos = tmbFinal * carboidratosPercent
-        val caloriasProteinas = tmbFinal * proteinasPercent
-        val caloriasGorduras = tmbFinal * gordurasPercent
-
-        // calorias em gramas
-        val gramasCarboidratos = caloriasCarboidratos / 4 // 1g de carboidratos = 4 calorias
-        val gramasProteinas = caloriasProteinas / 4 // 1g de proteínas = 4 calorias
-        val gramasGorduras = caloriasGorduras / 9 // 1g de gorduras = 9 calorias
-
-        // Armazenando as metas
         metas = mapOf(
             "calorias" to tmbFinal,
-            "carboidratos" to gramasCarboidratos,
-            "proteinas" to gramasProteinas,
-            "gorduras" to gramasGorduras
+            "carboidratos" to caloriasCarboidratos,
+            "proteinas" to caloriasProteinas,
+            "gorduras" to caloriasGorduras
         )
 
         return metas
+    }
+
+    fun recomendarAlimentos(): String {
+        val alimentosRecomendados = mutableListOf<String>()
+
+        // Alimentos ricos em carboidratos
+        val carboidratosArroz = 28 // Quantidade de carboidratos em arroz (em gramas) por 100g
+        val proteinasArroz = 2.6 // Quantidade de proteínas em arroz (em gramas) por 100g
+        alimentosRecomendados.add("Arroz - Carboidratos: $carboidratosArroz g, Proteínas: $proteinasArroz g a cada 100g")
+
+        val carboidratosMacarrao = 25 // Quantidade de carboidratos em macarrão (em gramas) por 100g
+        val proteinasMacarrao = 5.8 // Quantidade de proteínas em macarrão (em gramas) por 100g
+        alimentosRecomendados.add("Macarrão - Carboidratos: $carboidratosMacarrao g, Proteínas: $proteinasMacarrao g a cada 100g")
+
+        val carboidratosPao = 49 // Quantidade de carboidratos em pão (em gramas) por 100g
+        val proteinasPao = 8.9 // Quantidade de proteínas em pão (em gramas) por 100g
+        alimentosRecomendados.add("Pão - Carboidratos: $carboidratosPao g, Proteínas: $proteinasPao g a cada 100g")
+
+        val carboidratosBatata = 17 // Quantidade de carboidratos em batata (em gramas) por 100g
+        val proteinasBatata = 2.0 // Quantidade de proteínas em batata (em gramas) por 100g
+        alimentosRecomendados.add("Batata - Carboidratos: $carboidratosBatata g, Proteínas: $proteinasBatata g a cada 100g")
+
+        // Alimentos ricos em proteínas
+        val carboidratosFrango = 0 // Quantidade de carboidratos em frango (em gramas) por 100g
+        val proteinasFrango = 31 // Quantidade de proteínas em frango (em gramas) por 100g
+        alimentosRecomendados.add("Frango - Carboidratos: $carboidratosFrango g, Proteínas: $proteinasFrango g a cada 100g")
+
+        val carboidratosPeixe = 0 // Quantidade de carboidratos em peixe (em gramas) por 100g
+        val proteinasPeixe = 20 // Quantidade de proteínas em peixe (em gramas) por 100g
+        alimentosRecomendados.add("Peixe - Carboidratos: $carboidratosPeixe g, Proteínas: $proteinasPeixe g a cada 100g")
+
+        val carboidratosCarneVermelha = 0 // Quantidade de carboidratos em carne vermelha (em gramas) por 100g
+        val proteinasCarneVermelha = 36 // Quantidade de proteínas em carne vermelha (em gramas) por 100g
+        alimentosRecomendados.add("Carne vermelha magra - Carboidratos: $carboidratosCarneVermelha g, Proteínas: $proteinasCarneVermelha g a cada 100g")
+
+        val carboidratosOvos = 1.1 // Quantidade de carboidratos em ovos (em gramas) por 100g
+        val proteinasOvos = 13 // Quantidade de proteínas em ovos (em gramas) por 100g
+        alimentosRecomendados.add("Ovos - Carboidratos: $carboidratosOvos g, Proteínas: $proteinasOvos g a cada 100g")
+
+        val carboidratosLeguminosas = 63 // Quantidade de carboidratos em leguminosas (em gramas) por 100g
+        val proteinasLeguminosas = 23 // Quantidade de proteínas em leguminosas (em gramas) por 100g
+        alimentosRecomendados.add("Leguminosas (feijão, lentilha) - Carboidratos: $carboidratosLeguminosas g, Proteínas: $proteinasLeguminosas g a cada 100g")
+
+        // Alimentos ricos em gorduras saudáveis
+        val gordurasAbacate = 15 // Quantidade de gorduras em abacate (em gramas) por 100g
+        alimentosRecomendados.add("Abacate - Gorduras: $gordurasAbacate g a cada 100g")
+
+        val gordurasAzeite = 100 // Quantidade de gorduras em azeite de oliva (em gramas) por 100g
+        alimentosRecomendados.add("Azeite de oliva - Gorduras: $gordurasAzeite g a cada 100g")
+
+        val gordurasCastanhas = 49 // Quantidade de gorduras em castanhas (em gramas) por 100g
+        alimentosRecomendados.add("Castanhas - Gorduras: $gordurasCastanhas g a cada 100g")
+
+        val gordurasSementes = 54 // Quantidade de gorduras em sementes (em gramas) por 100g
+        alimentosRecomendados.add("Sementes - Gorduras: $gordurasSementes g a cada 100g")
+
+        return """
+            Recomendação de Alimentos para $nome:
+            - Calorias: ${metas["calorias"]} cal
+            - Carboidratos: ${metas["carboidratos"]} g
+            - Proteínas: ${metas["proteinas"]} g
+            - Gorduras: ${metas["gorduras"]} g
+            
+            Alimentos Recomendados:
+            ${alimentosRecomendados.joinToString("\n")}
+        """.trimIndent()
     }
 }
 
 fun main() {
     // Criar um novo usuário
-    val usuario1 = Usuario("João", 1.75, 70.0, 30, "Masculino", "Ativo", "Perda de peso")
-    val metasUsuario1 = usuario1.calcularMetas()
-    println("Metas do usuário: $metasUsuario1")
+    val usuario1 = Usuario("João", 183, 79, 21, "Masculino", "muito ativo", "Perda de peso")
+    usuario1.calcularMetas() // Calcular as metas antes de recomendar os alimentos
+    val recomendacaoAlimentos = usuario1.recomendarAlimentos()
+    println(recomendacaoAlimentos)
 }
